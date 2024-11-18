@@ -28,6 +28,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Github, Loader2, Twitter } from "lucide-react";
+interface ResponseItem {
+  data: unknown;
+  status: number;
+}
 
 export default function Home() {
   const [method, setMethod] = useState("GET");
@@ -338,7 +342,7 @@ export default function Home() {
                   </div>
                   <code>
                     {Array.isArray(response) &&
-                      response.map((item: any, index: number) => {
+                      response.map((item: ResponseItem, index: number) => {
                         return (
                           <div
                             key={index}

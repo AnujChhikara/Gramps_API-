@@ -52,7 +52,7 @@ export async function POST(request: Request) {
     }
   }
   if (isBulkExecutor) {
-    const responseArray: Array<{ data: any; status: number }> = [];
+    const responseArray: Array<{ data: unknown; status: number }> = [];
     for (const item of data) {
       try {
         const response = await fetch(fetchUrl, {

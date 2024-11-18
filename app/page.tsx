@@ -3,6 +3,12 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
 import {
   Select,
   SelectContent,
@@ -21,7 +27,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { Loader2 } from "lucide-react";
+import { Github, Loader2, Twitter } from "lucide-react";
 
 export default function Home() {
   const [method, setMethod] = useState("GET");
@@ -29,7 +35,7 @@ export default function Home() {
   const [params, setParams] = useState("");
   const [body, setBody] = useState("");
   const [specialMode, setSpecialMode] = useState(false);
-  const [response, setResponse] = useState("");
+  const [response, setResponse] = useState([]);
   const [authToken, setAuthToken] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -39,7 +45,7 @@ export default function Home() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    setResponse(""); // Clear previous response
+    setResponse([]); // Clear previous response
     setError("");
 
     let requestBody;
@@ -75,7 +81,7 @@ export default function Home() {
           url: url,
           method: method,
           params: params,
-          isNexusCast: specialMode,
+          isBulkExecutor: specialMode,
           authToken: authToken,
           data: requestBody,
         }),
@@ -128,6 +134,7 @@ export default function Home() {
     }
   }, [specialMode]);
 
+  console.log(response);
   return (
     <div className='min-h-screen dark bg-black text-white p-4 relative overflow-hidden'>
       {specialMode && (
@@ -148,14 +155,61 @@ export default function Home() {
           </div>
         </div>
       )}
-      <h1 className='text-2xl font-bold mb-6 relative z-10'>API Tester</h1>
+      <div className='flex justify-between px-4 pt-4 md:pb-8 sm:pb-4'>
+        <div className='flex space-x-2 items-center'>
+          <svg
+            fill='#000000'
+            className='fill-white w-10 '
+            viewBox='0 0 512 512'
+            xmlns='http://www.w3.org/2000/svg'
+          >
+            <title>ionicons-v5-l</title>
+            <path d='M336,336H32a16,16,0,0,1-14-23.81l152-272a16,16,0,0,1,27.94,0l152,272A16,16,0,0,1,336,336Z' />
+            <path d='M336,160a161.07,161.07,0,0,0-32.57,3.32L377.9,296.59A48,48,0,0,1,336,368H183.33A160,160,0,1,0,336,160Z' />
+          </svg>
+          <h1 className='text-2xl font-bold  relative z-10'>Reqium</h1>
+        </div>
+        <HoverCard>
+          <HoverCardTrigger asChild>
+            <Button variant='link'>@anuj</Button>
+          </HoverCardTrigger>
+          <HoverCardContent className='w-80'>
+            <div className='flex justify-between space-x-4'>
+              <Avatar>
+                <AvatarImage src='https://www.anujchhikara.com/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdlahahicg%2Fimage%2Fupload%2Fv1712917455%2Fzman4v8yaqtvixmnthmi.jpg&w=256&q=75' />
+                <AvatarFallback>VC</AvatarFallback>
+              </Avatar>
+              <div className='space-y-1'>
+                <div className='flex space-x-4'>
+                  <a href='https://www.anujchhikara.com/'>
+                    {" "}
+                    <h4 className='text-sm font-semibold underline'>
+                      Anuj Chhikara
+                    </h4>
+                  </a>{" "}
+                  <a href='https://github.com/AnujChhikara'>
+                    {" "}
+                    <Github size={18} />
+                  </a>
+                  <a href='https://x.com/AnujChhikara07'>
+                    <Twitter size={18} />
+                  </a>
+                </div>
+                <p className='text-sm text-gray-300'>
+                  Focused on creating seamless online experiences.
+                </p>
+              </div>
+            </div>
+          </HoverCardContent>
+        </HoverCard>
+      </div>
       <p className='text-red-600 text-sm mt-2 mb-4'>{error}</p>
       <Card className='relative z-10'>
         <CardHeader className='flex flex-row items-center justify-between'>
           <CardTitle>Request</CardTitle>
           <div className='flex items-center space-x-2'>
             <Label htmlFor='special-mode' className='text-sm'>
-              Nexus Cast
+              Bulk Executor
             </Label>
             <Switch
               id='special-mode'
@@ -226,7 +280,9 @@ export default function Home() {
                 <Label htmlFor='body'>Request Body</Label>
                 <Textarea
                   id='body'
-                  placeholder='{"key": "value"}'
+                  placeholder={
+                    specialMode ? '[{"key": "value"}]' : '{"key": "value"}'
+                  }
                   className='mt-2 h-40'
                   value={body}
                   onChange={(e) => setBody(e.target.value)}
@@ -256,7 +312,54 @@ export default function Home() {
                   <div className='h-4 bg-gray-700 rounded w-2/3'></div>
                 </div>
               ) : specialMode ? (
-                "special mode"
+                <div className='flex flex-col h-80 overflow-y-auto'>
+                  <div className='flex space-x-4  pr-4 justify-end'>
+                    <p
+                      className={`font-bold ${
+                        responseStatus.includes("200")
+                          ? "text-green-500"
+                          : "text-red-500"
+                      }`}
+                    >
+                      {responseStatus}
+                    </p>
+
+                    <p
+                      className={`font-bold ${
+                        responseTime < 1000
+                          ? "text-green-500"
+                          : responseTime < 2000
+                          ? "text-yellow-500"
+                          : "text-red-500"
+                      }`}
+                    >
+                      {responseTime}ms
+                    </p>
+                  </div>
+                  <code>
+                    {Array.isArray(response) &&
+                      response.map((item: any, index: number) => {
+                        return (
+                          <div
+                            key={index}
+                            className='mb-4 p-4 bg-zinc-900 rounded-lg shadow-md'
+                          >
+                            <div className='flex flex-col space-y-2'>
+                              <p className='text-sm text-gray-400'>
+                                <span className='font-bold text-gray-300'>
+                                  Status:
+                                </span>{" "}
+                                {item.status}
+                              </p>
+                              <code className='block p-4 bg-zinc-950 text-white rounded-md overflow-x-auto'>
+                                {JSON.stringify(item.data, null, 2)}
+                              </code>
+                            </div>
+                          </div>
+                        );
+                      })}
+                  </code>
+                </div>
               ) : (
                 <div className='flex flex-col h-80 overflow-y-auto'>
                   <div className='flex space-x-4  pr-4 justify-end'>
@@ -282,7 +385,11 @@ export default function Home() {
                       {responseTime}ms
                     </p>
                   </div>
-                  <code>{JSON.stringify(response, null, 2)}</code>
+                  <code>
+                    {response &&
+                      response.length > 0 &&
+                      JSON.stringify(response, null, 2)}
+                  </code>
                 </div>
               )}
             </pre>

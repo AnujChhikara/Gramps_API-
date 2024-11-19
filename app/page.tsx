@@ -56,11 +56,15 @@ export default function Home() {
 
     try {
       if (specialMode) {
-        const parsedBody =
-          body.trim().startsWith("[") && body.trim().endsWith("]")
-            ? JSON.parse(body)
-            : JSON.parse(`[${body}]`);
-        requestBody = parsedBody;
+        if (body === "") {
+          requestBody = [{}];
+        } else {
+          const parsedBody =
+            body.trim().startsWith("[") && body.trim().endsWith("]")
+              ? JSON.parse(body)
+              : JSON.parse(`[${body}]`);
+          requestBody = parsedBody;
+        }
       } else {
         if (body === "") {
           requestBody = null;
@@ -138,7 +142,6 @@ export default function Home() {
     }
   }, [specialMode]);
 
-  console.log(response);
   return (
     <div className='min-h-screen dark bg-black text-white p-4 relative overflow-hidden'>
       {specialMode && (
@@ -159,7 +162,7 @@ export default function Home() {
           </div>
         </div>
       )}
-      <div className='flex justify-between px-4 pt-4 md:pb-8 sm:pb-4'>
+      <div className='flex justify-between px-4 md:pt-4 md:pb-8 sm:pb-4'>
         <div className='flex space-x-2 items-center'>
           <svg
             fill='#000000'
@@ -175,16 +178,16 @@ export default function Home() {
         </div>
         <HoverCard>
           <HoverCardTrigger asChild>
-            <Button variant='link'>@anuj</Button>
+            <Button variant='outline'>@anuj</Button>
           </HoverCardTrigger>
-          <HoverCardContent className='w-80'>
-            <div className='flex justify-between space-x-4'>
+          <HoverCardContent className='w-60'>
+            <div className='flex justify-between items-center space-x-4'>
               <Avatar>
                 <AvatarImage src='https://www.anujchhikara.com/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdlahahicg%2Fimage%2Fupload%2Fv1712917455%2Fzman4v8yaqtvixmnthmi.jpg&w=256&q=75' />
                 <AvatarFallback>VC</AvatarFallback>
               </Avatar>
               <div className='space-y-1'>
-                <div className='flex space-x-4'>
+                <div className='flex space-x-2'>
                   <a href='https://www.anujchhikara.com/'>
                     {" "}
                     <h4 className='text-sm font-semibold underline'>
@@ -199,9 +202,6 @@ export default function Home() {
                     <Twitter size={18} />
                   </a>
                 </div>
-                <p className='text-sm text-gray-300'>
-                  Focused on creating seamless online experiences.
-                </p>
               </div>
             </div>
           </HoverCardContent>
@@ -390,9 +390,9 @@ export default function Home() {
                     </p>
                   </div>
                   <code>
-                    {response &&
-                      response.length > 0 &&
-                      JSON.stringify(response, null, 2)}
+                    {response && Array.isArray(response)
+                      ? ""
+                      : JSON.stringify(response, null, 2)}
                   </code>
                 </div>
               )}

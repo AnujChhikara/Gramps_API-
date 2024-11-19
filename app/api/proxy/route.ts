@@ -15,9 +15,6 @@ export async function POST(request: Request) {
     });
   }
 
-  if (Array.isArray(data) && isBulkExecutor) {
-    console.log(data);
-  }
   let fetchUrl = url;
 
   if (params) {

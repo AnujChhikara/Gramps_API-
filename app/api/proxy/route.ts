@@ -23,6 +23,8 @@ export async function POST(request: Request) {
   }
 
   if (!isBulkExecutor) {
+    const responseArray: Array<{ data: unknown; status: number }> = [];
+
     try {
       const response = await fetch(fetchUrl, {
         headers: {
@@ -36,18 +38,35 @@ export async function POST(request: Request) {
       });
       if (!response.ok) {
         const errorData = await response.json();
-        return Response.json(errorData || "Unknown error", {
+        const res = {
+          data: errorData,
           status: response.status,
-        });
+        };
+        responseArray.push(res);
       }
 
       const responseData = await response.json();
-      return Response.json(responseData, { status: response.status });
+      const res = {
+        data: responseData,
+        status: response.status,
+      };
+      responseArray.push(res);
     } catch (error) {
       console.error("Error:", error);
-      return new Response("An error occurred", { status: 500 });
+      const errorResponse = {
+        data: { message: "Request failed" },
+        status: 500,
+      };
+      responseArray.push(errorResponse);
+    }
+
+    if (responseArray.length > 0) {
+      return Response.json(responseArray, { status: 200 });
+    } else {
+      return new Response("No valid responses", { status: 500 });
     }
   }
+  // Bulk Executor
   if (isBulkExecutor) {
     const responseArray: Array<{ data: unknown; status: number }> = [];
     for (const item of data) {

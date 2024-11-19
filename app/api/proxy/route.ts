@@ -36,28 +36,24 @@ export async function POST(request: Request) {
         method: method,
         body: method === "GET" ? null : JSON.stringify(data),
       });
+
+      const responseBody = await response.json();
+
       if (!response.ok) {
-        const errorData = await response.json();
         const res = {
-          data: errorData,
+          data: responseBody,
+          status: response.status,
+        };
+        responseArray.push(res);
+      } else {
+        const res = {
+          data: responseBody,
           status: response.status,
         };
         responseArray.push(res);
       }
-
-      const responseData = await response.json();
-      const res = {
-        data: responseData,
-        status: response.status,
-      };
-      responseArray.push(res);
     } catch (error) {
       console.error("Error:", error);
-      const errorResponse = {
-        data: { message: "Request failed" },
-        status: 500,
-      };
-      responseArray.push(errorResponse);
     }
 
     if (responseArray.length > 0) {
@@ -81,29 +77,23 @@ export async function POST(request: Request) {
           method: method,
           body: method === "GET" ? null : JSON.stringify(item),
         });
+        const responseBody = await response.json();
+
         if (!response.ok) {
-          const errorData = await response.json();
           const res = {
-            data: errorData,
+            data: responseBody,
             status: response.status,
           };
           responseArray.push(res);
-          continue;
+        } else {
+          const res = {
+            data: responseBody,
+            status: response.status,
+          };
+          responseArray.push(res);
         }
-
-        const responseData = await response.json();
-        const res = {
-          data: responseData,
-          status: response.status,
-        };
-        responseArray.push(res);
       } catch (error) {
         console.error("Error:", error);
-        const errorResponse = {
-          data: { message: "Request failed" },
-          status: 500,
-        };
-        responseArray.push(errorResponse);
       }
     }
     if (responseArray.length > 0) {

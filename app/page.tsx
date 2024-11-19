@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -39,11 +38,10 @@ export default function Home() {
   const [params, setParams] = useState("");
   const [body, setBody] = useState("");
   const [specialMode, setSpecialMode] = useState(false);
-  const [response, setResponse] = useState([]);
+  const [response, setResponse] = useState<ResponseItem[]>([]);
   const [authToken, setAuthToken] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const [responseStatus, setResponseStatus] = useState("");
   const [responseTime, setResponseTime] = useState(0);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -66,8 +64,8 @@ export default function Home() {
           requestBody = parsedBody;
         }
       } else {
-        if (body === "") {
-          requestBody = null;
+        if (body === "" || body === null || body === undefined) {
+          requestBody = JSON.parse("{}");
         } else {
           requestBody = JSON.parse(body);
         }
@@ -99,8 +97,6 @@ export default function Home() {
       const endTime = performance.now();
       const duration = endTime - startTime;
 
-      // Set status and response time in state
-      setResponseStatus(`${response.status} ${response.statusText}`);
       setResponseTime(Number(duration.toFixed(2)));
 
       const data = await response.json();
@@ -108,9 +104,13 @@ export default function Home() {
     } catch (error) {
       const endTime = performance.now();
       const duration = endTime - startTime;
-
-      setResponseStatus("500 Internal Server Error");
       setResponseTime(Number(duration.toFixed(2)));
+      setResponse([
+        {
+          data: "Server Error",
+          status: 500,
+        },
+      ]);
       console.error(error);
     } finally {
       setIsLoading(false);
@@ -315,19 +315,9 @@ export default function Home() {
                   <div className='h-4 bg-gray-700 rounded w-1/2'></div>
                   <div className='h-4 bg-gray-700 rounded w-2/3'></div>
                 </div>
-              ) : specialMode ? (
+              ) : (
                 <div className='flex flex-col h-80 overflow-y-auto'>
                   <div className='flex space-x-4  pr-4 justify-end'>
-                    <p
-                      className={`font-bold ${
-                        responseStatus.includes("200")
-                          ? "text-green-500"
-                          : "text-red-500"
-                      }`}
-                    >
-                      {responseStatus}
-                    </p>
-
                     <p
                       className={`font-bold ${
                         responseTime < 1000
@@ -353,7 +343,21 @@ export default function Home() {
                                 <span className='font-bold text-gray-300'>
                                   Status:
                                 </span>{" "}
-                                {item.status}
+                                <span
+                                  className={`
+    ${
+      item.status >= 200 && item.status < 300
+        ? "text-green-500"
+        : item.status >= 400 && item.status < 500
+        ? "text-yellow-500"
+        : item.status >= 500 && item.status < 600
+        ? "text-red-500"
+        : "text-gray-500"
+    }
+  `}
+                                >
+                                  {item.status}
+                                </span>
                               </p>
                               <code className='block p-4 bg-zinc-950 text-white rounded-md overflow-x-auto'>
                                 {JSON.stringify(item.data, null, 2)}
@@ -362,37 +366,6 @@ export default function Home() {
                           </div>
                         );
                       })}
-                  </code>
-                </div>
-              ) : (
-                <div className='flex flex-col h-80 overflow-y-auto'>
-                  <div className='flex space-x-4  pr-4 justify-end'>
-                    <p
-                      className={`font-bold ${
-                        responseStatus.includes("200")
-                          ? "text-green-500"
-                          : "text-red-500"
-                      }`}
-                    >
-                      {responseStatus}
-                    </p>
-
-                    <p
-                      className={`font-bold ${
-                        responseTime < 1000
-                          ? "text-green-500"
-                          : responseTime < 2000
-                          ? "text-yellow-500"
-                          : "text-red-500"
-                      }`}
-                    >
-                      {responseTime}ms
-                    </p>
-                  </div>
-                  <code>
-                    {response && Array.isArray(response)
-                      ? ""
-                      : JSON.stringify(response, null, 2)}
                   </code>
                 </div>
               )}

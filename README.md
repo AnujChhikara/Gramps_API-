@@ -1,36 +1,13 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
+## Privacy Policy for Reqium
 
-First, run the development server:
+Reqium is an API testing Chrome extension designed to assist developers in sending API requests and viewing responses directly within the browser.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Data Collection: Reqium does not collect, store, or transmit any user data to its own servers. All data provided by the user (e.g., API requests, headers, and payloads) is processed locally or sent directly to the specified API endpoints.
+- Purpose: Reqium only processes data provided by the user to facilitate API testing functionality.
+- Data Retention: Reqium does not retain or save any data. All inputs and outputs are session-based and exist solely on the user's device.
+- Data Sharing: Reqium does not share user data with any third parties. The data remains private between the user and their specified API endpoints.
+- Security: It is the user’s responsibility to ensure the security of their API keys and data. Reqium operates entirely in the user’s browser and does not have access to or store sensitive information.
+- User Control: Users maintain complete control over the data they provide to the extension.
+For questions or concerns about our privacy practices, contact us at anuj.dev.in@gmail.com.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

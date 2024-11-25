@@ -18,7 +18,10 @@ export function UpcomingFeatures() {
   };
 
   return (
-    <section className='py-20 px-4 bg-black text-white'>
+    <section
+      className='py-20 px-4  bg-gradient-to-r from-zinc-500 via-stone-600 to-zinc-900
+     text-white'
+    >
       <div className='max-w-6xl mx-auto'>
         <h2 className='text-3xl font-bold text-center mb-12'>
           Upcoming Features
@@ -55,7 +58,7 @@ export function UpcomingFeatures() {
             Be the first to know when new features are released!
           </p>
           {isSubmitted ? (
-            <div className='flex items-center justify-center text-green-500'>
+            <div className='flex items-center justify-center text-white'>
               <Check className='mr-2' />
               <span>Thank you for joining the waitlist!</span>
             </div>
@@ -67,7 +70,7 @@ export function UpcomingFeatures() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className='mr-2'
+                className='mr-2 text-zinc-300'
               />
               <Button type='submit'>Join Waitlist</Button>
             </form>

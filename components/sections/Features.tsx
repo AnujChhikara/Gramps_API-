@@ -2,7 +2,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export function FeaturesSection() {
   return (
-    <section className='py-20 px-4 bg-black text-white'>
+    <section
+      className='py-20 px-4  bg-gradient-to-r from-zinc-500 via-stone-600 to-zinc-900
+     text-white'
+    >
       <h2 className='text-3xl font-bold text-center mb-12'>Key Features</h2>
       <div className='grid md:grid-cols-3 gap-8 '>
         <Card className='bg-zinc-900 border-zinc-800 '>

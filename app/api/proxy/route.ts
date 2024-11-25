@@ -2,16 +2,15 @@ export async function POST(request: Request) {
   const body = await request.json();
   const { url, method, params, isBulkExecutor, data, authToken } = body;
 
-  //Basic validation
   if (!url) {
     return new Response("Missing required field: 'url'", {
-      status: 400, // 400 Bad Request
+      status: 400,
     });
   }
 
   if (!method) {
     return new Response("Missing required field: 'method'", {
-      status: 400, // 400 Bad Request
+      status: 400,
     });
   }
 
@@ -22,84 +21,54 @@ export async function POST(request: Request) {
     fetchUrl = `${url}?${queryParams.toString()}`;
   }
 
-  if (!isBulkExecutor) {
-    const responseArray: Array<{ data: unknown; status: number }> = [];
+  const headers = {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+    "User-Agent": "API-Tester/1.0",
+    Authorization: authToken,
+  };
 
+  const fetchData = async (
+    url: string,
+    method: string,
+    requestData: unknown
+  ) => {
     try {
-      const response = await fetch(fetchUrl, {
-        headers: {
-          "Content-Type": "application/json", // Default content type is JSON
-          Accept: "application/json", // Default accepted response type is JSON
-          "User-Agent": "API-Tester/1.0", // Optional: Set a default user-agent
-          Authorization: authToken,
-        },
-        method: method,
-        body: method === "GET" ? null : JSON.stringify(data),
+      const response = await fetch(url, {
+        method,
+        headers,
+        body: method === "GET" ? null : JSON.stringify(requestData),
       });
 
       const responseBody = await response.json();
-
-      if (!response.ok) {
-        const res = {
-          data: responseBody,
-          status: response.status,
-        };
-        responseArray.push(res);
-      } else {
-        const res = {
-          data: responseBody,
-          status: response.status,
-        };
-        responseArray.push(res);
-      }
+      return {
+        data: responseBody,
+        status: response.status,
+      };
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error fetching data:", error);
+      return { data: { error: "Failed to fetch" }, status: 500 };
     }
+  };
 
-    if (responseArray.length > 0) {
-      return Response.json(responseArray, { status: 200 });
-    } else {
-      return new Response("No valid responses", { status: 500 });
+  if (!isBulkExecutor) {
+    const response = await fetchData(fetchUrl, method, data);
+    return Response.json([response], { status: response.status });
+  }
+  if (isBulkExecutor && Array.isArray(data)) {
+    try {
+      const responses = await Promise.all(
+        data.map((item) => fetchData(fetchUrl, method, item))
+      );
+      return Response.json(
+        responses.filter((res) => res),
+        { status: 200 }
+      );
+    } catch (error) {
+      console.error("Error processing bulk requests:", error);
+      return new Response("Error processing bulk requests", { status: 500 });
     }
   }
-  // Bulk Executor
-  if (isBulkExecutor) {
-    const responseArray: Array<{ data: unknown; status: number }> = [];
-    for (const item of data) {
-      try {
-        const response = await fetch(fetchUrl, {
-          headers: {
-            "Content-Type": "application/json", // Default content type is JSON
-            Accept: "application/json", // Default accepted response type is JSON
-            "User-Agent": "API-Tester/1.0", // Optional: Set a default user-agent
-            Authorization: authToken,
-          },
-          method: method,
-          body: method === "GET" ? null : JSON.stringify(item),
-        });
-        const responseBody = await response.json();
 
-        if (!response.ok) {
-          const res = {
-            data: responseBody,
-            status: response.status,
-          };
-          responseArray.push(res);
-        } else {
-          const res = {
-            data: responseBody,
-            status: response.status,
-          };
-          responseArray.push(res);
-        }
-      } catch (error) {
-        console.error("Error:", error);
-      }
-    }
-    if (responseArray.length > 0) {
-      return Response.json(responseArray, { status: 200 });
-    } else {
-      return new Response("No valid responses", { status: 500 });
-    }
-  }
+  return new Response("Invalid request data", { status: 400 });
 }

@@ -2,12 +2,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@/components/ui/hover-card";
+
 import {
   Select,
   SelectContent,
@@ -26,7 +21,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { Github, Loader2, Twitter } from "lucide-react";
+import { Loader2 } from "lucide-react";
 interface ResponseItem {
   data: unknown;
   status: number;
@@ -162,51 +157,7 @@ export default function HeroSection() {
           </div>
         </div>
       )}
-      <div className='flex justify-between px-4 md:pt-4 md:pb-8 sm:pb-4'>
-        <div className='flex space-x-2 items-center'>
-          <svg
-            fill='#000000'
-            className='fill-white w-10 '
-            viewBox='0 0 512 512'
-            xmlns='http://www.w3.org/2000/svg'
-          >
-            <title>ionicons-v5-l</title>
-            <path d='M336,336H32a16,16,0,0,1-14-23.81l152-272a16,16,0,0,1,27.94,0l152,272A16,16,0,0,1,336,336Z' />
-            <path d='M336,160a161.07,161.07,0,0,0-32.57,3.32L377.9,296.59A48,48,0,0,1,336,368H183.33A160,160,0,1,0,336,160Z' />
-          </svg>
-          <h1 className='text-2xl font-bold  relative z-10'>Reqium</h1>
-        </div>
-        <HoverCard>
-          <HoverCardTrigger asChild>
-            <Button variant='outline'>@anuj</Button>
-          </HoverCardTrigger>
-          <HoverCardContent className='w-60'>
-            <div className='flex justify-between items-center space-x-4'>
-              <Avatar>
-                <AvatarImage src='https://www.anujchhikara.com/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdlahahicg%2Fimage%2Fupload%2Fv1712917455%2Fzman4v8yaqtvixmnthmi.jpg&w=256&q=75' />
-                <AvatarFallback>VC</AvatarFallback>
-              </Avatar>
-              <div className='space-y-1'>
-                <div className='flex space-x-2'>
-                  <a href='https://www.anujchhikara.com/'>
-                    {" "}
-                    <h4 className='text-sm font-semibold underline'>
-                      Anuj Chhikara
-                    </h4>
-                  </a>{" "}
-                  <a href='https://github.com/AnujChhikara'>
-                    {" "}
-                    <Github size={18} />
-                  </a>
-                  <a href='https://x.com/AnujChhikara07'>
-                    <Twitter size={18} />
-                  </a>
-                </div>
-              </div>
-            </div>
-          </HoverCardContent>
-        </HoverCard>
-      </div>
+
       <p className='text-red-600 text-sm mt-2 mb-4'>{error}</p>
       <Card className='relative z-10'>
         <CardHeader className='flex flex-row items-center justify-between'>

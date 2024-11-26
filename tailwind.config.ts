@@ -9,6 +9,19 @@ export default {
   ],
   theme: {
     extend: {
+      animation: {
+        shimmer: "shimmer 2s linear infinite",
+      },
+      keyframes: {
+        shimmer: {
+          from: {
+            backgroundPosition: "0 0",
+          },
+          to: {
+            backgroundPosition: "-200% 0",
+          },
+        },
+      },
       colors: {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
@@ -50,6 +63,13 @@ export default {
           "4": "hsl(var(--chart-4))",
           "5": "hsl(var(--chart-5))",
         },
+      },
+      screens: {
+        sm: "300px",
+
+        md: "720px",
+
+        lg: "1370px",
       },
       borderRadius: {
         lg: "var(--radius)",

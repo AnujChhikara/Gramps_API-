@@ -7,7 +7,7 @@ import Navbar from "@/components/sections/Navbar";
 
 export default function Home() {
   return (
-    <div className='bg-black'>
+    <div className='bg-white text-black'>
       <Navbar />
       <MainSection />
 
@@ -15,10 +15,7 @@ export default function Home() {
 
       <FeaturesSection />
       <UpcomingFeatures />
-      <footer
-        className='py-8 text-center  bg-gradient-to-r from-zinc-500 via-stone-600 to-zinc-900
-     text-white'
-      >
+      <footer className='py-8 text-center font-bold'>
         <p>&copy; 2024 Reqium. All rights reserved.</p>
       </footer>
     </div>

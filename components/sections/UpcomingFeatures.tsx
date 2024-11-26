@@ -6,61 +6,73 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Check } from "lucide-react";
 
 export function UpcomingFeatures() {
-  const [email, setEmail] = useState("");
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [email, setEmail] = useState<string>("");
+  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Here you would typically send the email to your backend
-    console.log("Email submitted:", email);
+    await fetch("/api/waitlist", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: email,
+      }),
+    });
     setIsSubmitted(true);
     setEmail("");
   };
 
   return (
-    <section
-      className='py-20 px-4  bg-gradient-to-r from-zinc-500 via-stone-600 to-zinc-900
-     text-white'
-    >
+    <section className='py-20 px-4'>
       <div className='max-w-6xl mx-auto'>
         <h2 className='text-3xl font-bold text-center mb-12'>
-          Upcoming Features
+          Explore Upcoming Features
         </h2>
         <div className='grid md:grid-cols-3 gap-8 mb-12'>
-          <Card className='bg-zinc-900 border-zinc-800'>
+          <Card className='bg-transparent border-dashed border-2 shadow-xl border-zinc-900'>
             <CardHeader>
-              <CardTitle>Request Storage</CardTitle>
+              <CardTitle className='text-black text-lg'>
+                Request Storage
+              </CardTitle>
             </CardHeader>
-            <CardContent>
-              Store all your API requests for easy access and reuse.
+            <CardContent className='text-zinc-700 font-semibold'>
+              Effortlessly store and manage all your API requests for quick
+              access and reuse.
             </CardContent>
           </Card>
-          <Card className='bg-zinc-900 border-zinc-800'>
+          <Card className='bg-transparent border-dashed border-2 shadow-xl border-zinc-900'>
             <CardHeader>
-              <CardTitle>Collections</CardTitle>
+              <CardTitle className='text-black text-lg'>Collections</CardTitle>
             </CardHeader>
-            <CardContent>
-              Organize your requests into collections for better management.
+            <CardContent className='text-zinc-700 font-semibold'>
+              Organize your API requests into collections for better
+              organization and streamlined management.
             </CardContent>
           </Card>
-          <Card className='bg-zinc-900 border-zinc-800'>
+          <Card className='bg-transparent border-dashed border-2 shadow-xl border-zinc-900'>
             <CardHeader>
-              <CardTitle>Request History</CardTitle>
+              <CardTitle className='text-black text-lg'>
+                Request History
+              </CardTitle>
             </CardHeader>
-            <CardContent>
-              View and replay your recent API requests with ease.
+            <CardContent className='text-zinc-700 font-semibold'>
+              Easily view and replay your recent API requests to quickly
+              troubleshoot and test again.
             </CardContent>
           </Card>
         </div>
         <div className='text-center'>
           <h3 className='text-2xl font-semibold mb-4'>Join the Waitlist</h3>
           <p className='mb-6'>
-            Be the first to know when new features are released!
+            Be the first to get notified when these exciting new features are
+            released!
           </p>
           {isSubmitted ? (
-            <div className='flex items-center justify-center text-white'>
+            <div className='flex items-center justify-center text-black font-bold'>
               <Check className='mr-2' />
-              <span>Thank you for joining the waitlist!</span>
+              <span>Thank you for signing up for the waitlist!</span>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className='flex max-w-md mx-auto'>
@@ -70,7 +82,7 @@ export function UpcomingFeatures() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className='mr-2 text-zinc-300'
+                className='mr-2'
               />
               <Button type='submit'>Join Waitlist</Button>
             </form>

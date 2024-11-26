@@ -139,8 +139,8 @@ export default function HeroSection() {
 
   return (
     <div
-      className='min-h-screen pt-20 dark bg-gradient-to-r from-zinc-500 via-stone-600 to-zinc-900
-     text-white p-4 relative overflow-hidden'
+      className='min-h-screen md:pt-20 dark 
+      p-4 relative overflow-hidden'
     >
       {specialMode && (
         <div className='absolute inset-0 pointer-events-none overflow-hidden'>
@@ -163,7 +163,7 @@ export default function HeroSection() {
 
       <p className='text-red-600 text-sm mt-2 mb-4'>{error}</p>
       <div className='flex items-center justify-center'>
-        <Card className='relative z-10 shadow-lg shadow-zinc-900 w-11/12 items-center'>
+        <Card className='relative z-10 shadow-lg shadow-zinc-900 md:w-11/12 items-center'>
           <CardHeader className='flex flex-row items-center justify-between'>
             <CardTitle>Request</CardTitle>
             <div className='flex items-center space-x-2'>
@@ -329,6 +329,11 @@ export default function HeroSection() {
           </CardFooter>
         </Card>
       </div>
+      <p className='text-sm text-green-800 mt-4 font-semibold flex justify-end md:w-11/12'>
+        {" "}
+        * Localhost requests are not supported here. Please use our Chrome
+        extension for that.{" "}
+      </p>
     </div>
   );
 }

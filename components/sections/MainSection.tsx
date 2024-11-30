@@ -2,8 +2,8 @@ import { Download, Github } from "lucide-react";
 
 export function MainSection() {
   return (
-    <section className='py-24 px-4 text-center '>
-      <div className='container mx-auto max-w-6xl'>
+    <section className='py-24 px-4 text-center flex justify-center'>
+      <div className='flex flex-col md:space-y-12 sm:space-y-6  justify-center text-center max-w-6xl'>
         <h1 className='text-4xl md:text-7xl font-bold mb-6 text-zinc-800 animate-fade-in-down'>
           Welcome to <span className='text-green-500 underline'>Reqium</span>
         </h1>
@@ -11,7 +11,13 @@ export function MainSection() {
           Streamline your API testing with Reqium, the powerful Chrome extension
           that makes API requests faster, simpler, and more enjoyable.
         </p>
-        <div className='flex md:flex-row sm:flex-col-reverse justify-center items-center gap-4 mb-12'>
+        <div className='flex md:flex-row sm:flex-col justify-center items-center gap-4 mb-12'>
+          <a
+            href='https://github.com/AnujChhikara/ReqiumAPI'
+            className='bg-transparent border rounded-xl px-4 py-3 flex items-center  hover:text-white duration-500 font-bold border-black hover:bg-black'
+          >
+            <Github className='mr-2 h-4 w-4' /> View on GitHub
+          </a>
           <a
             href='https://chromewebstore.google.com/detail/reqium/cjfaackekpmoogobcbfkpfncjkmibhbo'
             className='flex items-center animate-shimmer
@@ -21,14 +27,8 @@ export function MainSection() {
           >
             <Download className='mr-2 h-4 w-4' /> Download Extension
           </a>
-          <a
-            href='https://github.com/AnujChhikara/ReqiumAPI'
-            className='bg-transparent border rounded-xl px-4 py-3 flex items-center  hover:text-white duration-500 font-bold border-black hover:bg-black'
-          >
-            <Github className='mr-2 h-4 w-4' /> View on GitHub
-          </a>
         </div>
-        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-left'>
+        <div className='grid grid-cols-1 md:pt-20 sm:pt-4 md:grid-cols-2 lg:grid-cols-3 gap-8 text-left'>
           <FeatureCard
             title='Bulk API Requests'
             description='Send multiple requests at once to save time and increase productivity.'
@@ -55,7 +55,7 @@ function FeatureCard({
   description: string;
 }) {
   return (
-    <div className='bg-green-100 p-6 min-w-80 rounded-lg shadow-xl'>
+    <div className='bg-white border-2 hover:shadow-xl duration-300 hover:shadow-zinc-400 p-6 min-w-80 rounded-lg shadow-xl'>
       <h3 className='text-xl font-bold mb-2'>{title}</h3>
       <p className='text-zinc-700 font-semibold'>{description}</p>
     </div>

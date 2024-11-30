@@ -41,7 +41,7 @@ export default function Navbar() {
             >
               <Github
                 size={45}
-                className=' border rounded-full  p-2 bg-green-900 text-white'
+                className=' border rounded-full  p-2 bg-white text-black'
               />
             </a>
           </div>
